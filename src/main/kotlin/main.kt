@@ -24,12 +24,12 @@ fun main() {
     transferByCardType(CardType.VISA, 50_000)
     transferByCardType(CardType.VISA, 100_000)
 
-    transferByCardType(CardType.MIR, 100_000)
-    transferByCardType(CardType.MIR, 50_000)
-    transferByCardType(CardType.MIR, 50_000)
+    transferByCardType(amount = 100_000)
+    transferByCardType(amount = 50_000)
+    transferByCardType(amount = 50_000)
 }
 
-fun transferByCardType(cardType: CardType, amount: Int) {
+fun transferByCardType(cardType: CardType = CardType.MIR, amount: Int) {
     val totalMonthTransfer = getTotalMonthTransfer(cardType)
     val totalDayTransfer = getTotalDayTransfer(cardType)
     if (totalDayTransfer + amount > DAY_LIMIT) {
@@ -46,7 +46,7 @@ fun transferByCardType(cardType: CardType, amount: Int) {
 
 }
 
-fun getCommission(cardType: CardType, amount: Int, totalMonthTransfer: Int): Int {
+fun getCommission(cardType: CardType = CardType.MIR, amount: Int, totalMonthTransfer: Int = 0): Int {
     val commission = when (cardType) {
         CardType.MASTERCARD -> Math.round(
             (amount - 0.coerceAtLeast(MONTH_LIMIT_MASTERCARD_NO_COMMISSION - totalMonthTransfer))
