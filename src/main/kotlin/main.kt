@@ -48,12 +48,9 @@ fun transferByCardType(cardType: CardType = CardType.MIR, amount: Int) {
 
 fun getCommission(cardType: CardType = CardType.MIR, amount: Int, totalMonthTransfer: Int = 0): Int {
     val commission = when (cardType) {
-        CardType.MASTERCARD -> if (totalMonthTransfer + amount > MONTH_LIMIT_MASTERCARD_NO_COMMISSION)
-            Math.round(
-                (amount - 0.coerceAtLeast(MONTH_LIMIT_MASTERCARD_NO_COMMISSION - totalMonthTransfer))
-                        * (PERCENT_MASTERCARD / 100)
-                        + MASTERCARD_ADD_COMMISSION
-            ).toInt() else 0
+        CardType.MASTERCARD -> if (totalMonthTransfer + amount > MONTH_LIMIT_MASTERCARD_NO_COMMISSION) Math.round(
+            (amount - 0.coerceAtLeast(MONTH_LIMIT_MASTERCARD_NO_COMMISSION - totalMonthTransfer)) * (PERCENT_MASTERCARD / 100) + MASTERCARD_ADD_COMMISSION
+        ).toInt() else 0
 
         CardType.VISA -> Integer.max(VISA_MIN_COMMISSION, Math.round(amount * (PERCENT_VISA / 100)).toInt())
         CardType.MIR -> 0
