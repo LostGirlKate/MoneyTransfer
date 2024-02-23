@@ -17,8 +17,9 @@ var totalDayTransferVisa = 0
 var totalDayTransferMir = 0
 
 fun main() {
-    transferByCardType(CardType.MASTERCARD, 150_000)
-    transferByCardType(CardType.MASTERCARD, 150_000)
+    transferByCardType(CardType.MASTERCARD, 1_000)
+    transferByCardType(CardType.MASTERCARD, 76_000)
+    transferByCardType(CardType.MASTERCARD, 100_000)
 
     transferByCardType(CardType.VISA, 100_000)
     transferByCardType(CardType.VISA, 50_000)
@@ -43,16 +44,17 @@ fun transferByCardType(cardType: CardType = CardType.MIR, amount: Int) {
         println("Перевод осуществлен!")
     }
     println()
-
 }
 
 fun getCommission(cardType: CardType = CardType.MIR, amount: Int, totalMonthTransfer: Int = 0): Int {
     val commission = when (cardType) {
-        CardType.MASTERCARD -> Math.round(
-            (amount - 0.coerceAtLeast(MONTH_LIMIT_MASTERCARD_NO_COMMISSION - totalMonthTransfer))
-                    * (PERCENT_MASTERCARD / 100)
-                    + MASTERCARD_ADD_COMMISSION
-        ).toInt()
+        CardType.MASTERCARD -> if (totalMonthTransfer + amount > MONTH_LIMIT_MASTERCARD_NO_COMMISSION)
+            Math.round(
+                (amount - 0.coerceAtLeast(MONTH_LIMIT_MASTERCARD_NO_COMMISSION - totalMonthTransfer))
+                        * (PERCENT_MASTERCARD / 100)
+                        + MASTERCARD_ADD_COMMISSION
+            ).toInt() else 0
+
         CardType.VISA -> Integer.max(VISA_MIN_COMMISSION, Math.round(amount * (PERCENT_VISA / 100)).toInt())
         CardType.MIR -> 0
     }
@@ -92,4 +94,16 @@ fun applyTransfer(cardType: CardType, amount: Int) {
             totalDayTransferMir += amount
         }
     }
+}
+
+fun clearDayTotal() {
+    totalDayTransferMastercard = 0
+    totalDayTransferVisa = 0
+    totalDayTransferMir = 0
+}
+
+fun clearMonthTotal() {
+    totalMonthTransferMastercard = 0
+    totalMonthTransferVisa = 0
+    totalMonthTransferMir = 0
 }
