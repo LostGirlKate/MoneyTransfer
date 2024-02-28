@@ -81,7 +81,11 @@ fun getCommission(cardType: CardType = CardType.MIR, amount: Int, totalMonthTran
             (amount - 0.coerceAtLeast(MONTH_LIMIT_NO_COMMISSION - totalMonthTransfer)) * (PERCENT_WITH_LIMIT / 100) + ADD_COMMISSION
         ).toInt() else 0
 
-        CardType.VISA, CardType.MIR -> Integer.max(MIN_COMMISSION, Math.round(amount * (PERCENT_NO_LIMIT / 100)).toInt())
+        CardType.VISA, CardType.MIR -> Integer.max(
+            MIN_COMMISSION,
+            Math.round(amount * (PERCENT_NO_LIMIT / 100)).toInt()
+        )
+
         CardType.VK_PAY -> 0
     }
     return commission
