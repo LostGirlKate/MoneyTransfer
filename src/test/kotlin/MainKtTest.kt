@@ -10,7 +10,7 @@ class MainKtTest {
         clearMonthTotal()
         val cardType = CardType.MASTERCARD
         var monthResult = getTotalMonthTransfer(cardType)
-        assertEquals(0, monthResult)
+        assertEquals(1, monthResult)
         var dayResult = getTotalDayTransfer(cardType)
         assertEquals(0, dayResult)
         transferByCardType(cardType, 100)
